@@ -9,7 +9,7 @@ from app.config import PREFIX
 from app.nmrpredictor import run_predictorc, run_predictorh
 
 app = FastAPI(
-    title="NMRshiftDB2 predictor APP",
+    title="NMRshiftDB2 predictor app",
     redoc_url=None,
     docs_url=f"{PREFIX}/docs",
     openapi_url=f"{PREFIX}/openapi.json",

@@ -3,6 +3,8 @@
 Web API wrapper for [nmrshiftdb2 predictors](https://sourceforge.net/p/nmrshiftdb2/wiki/PredictorJars/).
 Please see https://nmrshiftdb.nmr.uni-koeln.de for details on nmrshiftdb.
 
+The <sup>1</sup>H predictor runs much faster than the <sup>13</sup>C predictor.
+
 nmrshiftdb and [CDK](https://cdk.github.io/) JARs are distributed in the `app/lib` directory.
 
 nmrshiftdb is licensed under a GNU AGPL license.
@@ -32,7 +34,7 @@ Then run the docker image:
 
 `docker run --name nmr_api -t -d -p 8000:80 nmr_api`
 
-And then you can go to `http://localhost:8000` and play with the API docs.
+And then you can go to `http://localhost:8000/api/docs` and play with the API docs.
 
 #### Usage in Python
 
@@ -51,7 +53,8 @@ benzene_prot = proton_preds[3]
 benzene_carb = carbon_preds[3]
 
 # you can write molfiles from response for visualization in ChemDraw
-
+with open("benzene.mol", "w") as f:
+    f.write(benzene_prot["molblock"])
 
 # you can load the responses into RDKit and write images
 from rdkit.Chem import Draw
