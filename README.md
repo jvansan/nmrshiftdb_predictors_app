@@ -3,6 +3,8 @@
 Web API wrapper for [nmrshiftdb2 predictors](https://sourceforge.net/p/nmrshiftdb2/wiki/PredictorJars/).
 Please see https://nmrshiftdb.nmr.uni-koeln.de for details on nmrshiftdb.
 
+This app will parse a list of InChI and SMILES strings and return canonicalized atom numbering with predictions.
+
 The <sup>1</sup>H predictor runs much faster than the <sup>13</sup>C predictor.
 
 nmrshiftdb and [CDK](https://cdk.github.io/) JARs are distributed in the `app/lib` directory.
