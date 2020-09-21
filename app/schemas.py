@@ -1,4 +1,5 @@
 from typing import List, Optional
+from enum import Enum
 
 from pydantic import BaseModel
 
@@ -20,3 +21,20 @@ class PredictionResponse(BaseModel):
     standard_smiles: str
     molblock: str
     predictions: List[Prediction]
+
+
+class CanonMethods(str, Enum):
+    smiles = "smiles"
+    algorithm = "algorithm"
+
+
+class CanonInput(BaseModel):
+    smiles: str
+    add_hs: bool
+    reverse: bool
+    method: CanonMethods
+
+
+class CanonOutput(BaseModel):
+    input: CanonInput
+    result: str

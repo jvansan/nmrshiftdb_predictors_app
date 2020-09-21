@@ -17,9 +17,10 @@ CDK is licensed under a GNU LGLP 2.1 license.
 
 Requires JDK, and Anaconda Python 3.
 
+To install dependencies (only for running locally):
+
 ```
-conda create -n nmr_api -c rdkit rdkit
-conda install -n nmr_api -c conda-forge fastapi uvicorn
+conda install -n nmr_api -c conda-forge fastapi uvicorn rdkit
 ```
 
 #### To run locally

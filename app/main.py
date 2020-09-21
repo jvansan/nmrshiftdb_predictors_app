@@ -1,9 +1,9 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import FastAPI
 from starlette.responses import RedirectResponse
 
-from app import schemas
+from app import schemas, chem
 from app.chem import process_inchi, process_smiles
 from app.config import PREFIX
 from app.nmrpredictor import run_predictorc, run_predictorh
@@ -83,3 +83,30 @@ def predict_carbon(input_: schemas.PredictionInput):
             )
         )
     return res
+
+
+@app.post(f"{PREFIX}/utils/canonicalize", response_model=schemas.CanonOutput)
+def canonicalize_smiles(
+    smiles: str,
+    method: schemas.CanonMethods = schemas.CanonMethods.smiles,
+    reverse: Optional[bool] = False,
+    add_hs: Optional[bool] = True,
+):
+    """Perform canonicalization as defined by the input.
+    Reverse only valid for algorithm implementation."""
+    m = chem.smi_to_mol(smiles)
+    if method == schemas.CanonMethods.algorithm:
+        result = chem.canonicalize_atom_order(m, reverse=reverse, add_hs=add_hs)
+    elif method == schemas.CanonMethods.smiles:
+        result = chem.rdkit_atom_order(m, add_hs=add_hs)
+    else:
+        raise TypeError("Invalid input method")
+    return {
+        "input": {
+            "smiles": smiles,
+            "method": method,
+            "reverse": reverse,
+            "add_hs": add_hs,
+        },
+        "result": chem.mol_to_smi(result),
+    }
