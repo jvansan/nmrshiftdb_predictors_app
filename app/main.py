@@ -6,7 +6,7 @@ from starlette.responses import RedirectResponse
 from app import schemas, chem
 from app.chem import process_inchi, process_smiles
 from app.config import PREFIX
-from app.nmrpredictor import run_predictorc, run_predictorh
+from app.nmrpredictor import run_predictorc, run_predictorh, Solvent
 
 app = FastAPI(
     title="NMRshiftDB2 predictor app",
@@ -28,12 +28,12 @@ async def doc_redirect():
 
 
 @app.post(f"{PREFIX}/predict/proton", response_model=List[schemas.PredictionResponse])
-def predict_proton(input_: schemas.PredictionInput):
+def predict_proton(input_: schemas.PredictionInput, solvent: Optional[Solvent] = None):
     """Predicts 1H NMR peaks for input SMILES and INCHI"""
     res = []
     for smi in input_.smiles:
         canon_smi, canon_mb, temp_path = process_smiles(smi)
-        pred = run_predictorh(temp_path)
+        pred = run_predictorh(temp_path, solvent=solvent)
         res.append(
             schemas.PredictionResponse(
                 input=smi,
@@ -57,12 +57,12 @@ def predict_proton(input_: schemas.PredictionInput):
 
 
 @app.post(f"{PREFIX}/predict/carbon", response_model=List[schemas.PredictionResponse])
-def predict_carbon(input_: schemas.PredictionInput):
+def predict_carbon(input_: schemas.PredictionInput, solvent: Optional[Solvent] = None):
     """Predicts 13C NMR peaks for input SMILES and INCHI"""
     res = []
     for smi in input_.smiles:
         canon_smi, canon_mb, temp_path = process_smiles(smi)
-        pred = run_predictorc(temp_path)
+        pred = run_predictorc(temp_path, solvent=solvent)
         res.append(
             schemas.PredictionResponse(
                 input=smi,

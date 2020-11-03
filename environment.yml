@@ -1,0 +1,9 @@
+name: nmr
+channels:
+  - rdkit
+  - conda-forge
+  - defaults
+dependencies:
+  - fastapi
+  - uvicorn
+  - rdkit

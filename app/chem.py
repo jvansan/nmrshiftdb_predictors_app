@@ -1,4 +1,5 @@
 from rdkit import Chem
+from rdkit.Chem.rdDepictor import Compute2DCoords
 
 from app.config import TEMP_DIR
 
@@ -38,6 +39,7 @@ def canonicalize_atom_order(m, reverse=True, add_hs=True):
         mH = Chem.AddHs(m)
     else:
         mH = m
+    Compute2DCoords(mH)
     m_neworder = tuple(
         zip(
             *sorted(
