@@ -31,12 +31,16 @@ async def doc_redirect():
 def predict_proton(input_: schemas.PredictionInput, solvent: Optional[Solvent] = None):
     """Predicts 1H NMR peaks for input SMILES and INCHI"""
     res = []
+    solv = "Unreported"
+    if solvent is not None:
+        solv = solvent.value 
     for smi in input_.smiles:
         canon_smi, canon_mb, temp_path = process_smiles(smi)
         pred = run_predictorh(temp_path, solvent=solvent)
         res.append(
             schemas.PredictionResponse(
                 input=smi,
+                solvent=solv,
                 standard_smiles=canon_smi,
                 molblock=canon_mb,
                 predictions=pred,
@@ -48,6 +52,7 @@ def predict_proton(input_: schemas.PredictionInput, solvent: Optional[Solvent] =
         res.append(
             schemas.PredictionResponse(
                 input=smi,
+                solvent=solv,
                 standard_smiles=canon_smi,
                 molblock=canon_mb,
                 predictions=pred,
@@ -60,6 +65,9 @@ def predict_proton(input_: schemas.PredictionInput, solvent: Optional[Solvent] =
 def predict_carbon(input_: schemas.PredictionInput, solvent: Optional[Solvent] = None):
     """Predicts 13C NMR peaks for input SMILES and INCHI"""
     res = []
+    solv = "Unreported"
+    if solvent is not None:
+        solv = solvent.value 
     for smi in input_.smiles:
         canon_smi, canon_mb, temp_path = process_smiles(smi)
         pred = run_predictorc(temp_path, solvent=solvent)
@@ -68,6 +76,7 @@ def predict_carbon(input_: schemas.PredictionInput, solvent: Optional[Solvent] =
                 input=smi,
                 standard_smiles=canon_smi,
                 molblock=canon_mb,
+                solvent=solv,
                 predictions=pred,
             )
         )
@@ -78,6 +87,7 @@ def predict_carbon(input_: schemas.PredictionInput, solvent: Optional[Solvent] =
             schemas.PredictionResponse(
                 input=smi,
                 standard_smiles=canon_smi,
+                solvent=solv,
                 molblock=canon_mb,
                 predictions=pred,
             )
