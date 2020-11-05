@@ -36,10 +36,10 @@ def call_predictor(path: Path, predictor: Predictors, solvent: Optional[Solvent]
     else:
         raise ValueError("Predictor does not exist")
     if solvent:
-        cmd = ["java", "-cp", jar, "Test", str(path.absolute()), f'"{solvent.value}"' ]
+        cmd = ["java", "-cp", jar, "Test", str(path.absolute()), f'\"{solvent.value}\"' ]
     else:
         cmd = ["java", "-cp", jar, "Test", str(path.absolute())]
-    return subprocess.check_output(cmd , cwd=config.LIB_DIR)
+    return subprocess.run(" ".join(cmd), cwd=config.LIB_DIR, capture_output=True, shell=True).stdout
 
 
 def parse_predictor_output(res):
