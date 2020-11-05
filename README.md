@@ -43,13 +43,21 @@ And then you can go to `http://localhost:8000/api/docs` and play with the API do
 
 Here is an example of how to use it from Python:
 
+Possible solvents are "Chloroform-D1 (CDCl3)", "Methanol-D4 (CD3OD)", and "Dimethylsulphoxide-D6 (DMSO-D6, C2D6SO)".
+Note you will have the url-encode these strings using the [urlib.parse](https://docs.python.org/3/library/urllib.parse.html#url-quoting) library.
+
+Excluded the solvent to use the "Unreported" option:
+> The option "Unreported" will use shifts from any solvent.
+
 ```
 import requests
+from urllib.parse import quote
 from rdkit import Chem
 smiles = ["C", "CC", "CCC", "c1ccccc1"]
-r = requests.post("http://localhost:8000/api/predict/proton", json={"smiles": smiles})
+solvent = "Chloroform-D1 (CDCl3)"
+r = requests.post("http://localhost:8000/api/predict/proton?solvent="+quote(solvent), json={"smiles": smiles})
 proton_preds = r.json()
-r1 = requests.post("http://localhost:8000/api/predict/carbon", json={"smiles": smiles})
+r1 = requests.post("http://localhost:8000/api/predict/carbon?solvent="+quote(solvent), json={"smiles": smiles})
 carbon_preds = r1.json()
 
 benzene_prot = proton_preds[3]
