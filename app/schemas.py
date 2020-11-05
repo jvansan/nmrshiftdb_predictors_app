@@ -21,6 +21,7 @@ class PredictionResponse(BaseModel):
     standard_smiles: str
     molblock: str
     predictions: List[Prediction]
+    solvent: str = "Unreported"
 
 
 class CanonMethods(str, Enum):

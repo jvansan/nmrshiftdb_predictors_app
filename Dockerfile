@@ -1,6 +1,6 @@
 FROM jvansan/uvicorn-gunicorn:3.7
 
-LABEL Name=nmr_api Version=0.2
+LABEL Name=nmr_api Version=0.3
 
 RUN mkdir /usr/share/man/man1/
 RUN apt-get update && apt-get install -y openjdk-11-jdk-headless
